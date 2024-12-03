@@ -57,12 +57,16 @@ def kelola_produk(role, username):
 
     pilihan = input("Masukan jawaban Anda: ")
     if pilihan == "1":
+        os.system('cls')
         tambah_produk(data_produk)
     elif pilihan == "2":
+        os.system('cls')
         hapus_produk(data_produk)
     elif pilihan == "3":
+        os.system('cls')
         update_produk(data_produk)
     elif pilihan == "4":
+        os.system('cls')
         if role == "owner":
             menu_owner(username)
         else:
@@ -124,14 +128,17 @@ def catatan_penjualan(username):
     tampilkan_produk = produk.copy()
     tampilkan_produk.index += 1
     print("\nDaftar Produk Tersedia:")
-    kolom_tertentu = produk[['produk', 'stok(kg)', 'harga']]
+    kolom_tertentu = tampilkan_produk[['produk', 'stok(kg)', 'harga']]
     print(tabulate(kolom_tertentu, headers='keys', tablefmt='fancy_grid'))
+
 
     while True:
         try:
             jumlah_jenis = int(input("\nBerapa jenis produk yang ingin dibeli: "))
             if jumlah_jenis <= 0:
                 print("Masukkan angka lebih besar dari 0!")
+            elif len(produk)+1 <= jumlah_jenis:
+                print("Jumlah jenis barang yang ingin dibeli melebihi jumlah produk kami")
                 continue
             break
         except ValueError:
@@ -146,7 +153,7 @@ def catatan_penjualan(username):
 
         while True:
             try:
-                nomor_produk = int(input("Masukkan nomor produk: "))
+                nomor_produk = int(input("Masukkan nomor produk: ")) -1
                 if nomor_produk < 0 or nomor_produk >= len(produk):
                     print("Nomor produk tidak valid!")
                     continue
@@ -226,10 +233,13 @@ def kelola_akun_kasir():
     pilihan = input("Pilih menu (1/2/3): ")
 
     if pilihan == '1':
+        os.system('cls')
         tambah_akun_kasir()
     elif pilihan == '2':
+        os.system('cls')
         hapus_akun_kasir()
     elif pilihan == '3':
+        os.system('cls')
         return
     else:
         print("Pilihan tidak valid!")
@@ -258,15 +268,24 @@ def hapus_akun_kasir():
     akun_kasir = pd.read_csv('user.csv')
     akun_kasir.index += 1
     print(tabulate(akun_kasir, headers='keys', tablefmt='fancy_grid'))
-    index_hapus = int(input("Masukkan index akun yang akan dihapus: "))
-
-    if 0 <= index_hapus < len(akun_kasir)+1:
-        akun_kasir = akun_kasir.drop(index=index_hapus).reset_index(drop=True)
-        akun_kasir.to_csv('user.csv', index=False)
-        print("Akun kasir berhasil dihapus!")
-    else:
-        print("Index tidak valid!")
     
+    while True:
+        try:
+            index_hapus = int(input("Masukkan index akun yang akan dihapus: "))
+            if 0 <= index_hapus < len(akun_kasir)+1:
+                akun_kasir = akun_kasir.drop(index=index_hapus).reset_index(drop=True)
+                akun_kasir.to_csv('user.csv', index=False)
+                print("Akun kasir berhasil dihapus!")
+                break
+            else:
+                print("Index tidak valid!")
+    
+        except ValueError:
+            print("Input tidak valid! Masukkan angka.")
+
+            
+
+            
     input("Tekan Enter untuk melanjutkan...")
 
 
@@ -282,15 +301,19 @@ def laporan_keuntungan():
         pilihan = input("Pilih menu (1/2/3/4): ")
         
         if pilihan == '1':
+            os.system('cls')
             penjualan = pd.read_csv('penjualan.csv')
             laporan = penjualan.groupby('produk').agg({
                 'jumlah': 'sum',
                 'keuntungan': 'sum'
             }).reset_index()
             print("\nLaporan Keuntungan Per Produk:")
+            laporan.index += 1
             print(tabulate(laporan, headers='keys', tablefmt='fancy_grid'))
             
+            
         elif pilihan == '2':
+            os.system('cls')
             penjualan = pd.read_csv('penjualan.csv')
             penjualan['tanggal'] = pd.to_datetime(penjualan['tanggal'])
             
@@ -333,6 +356,7 @@ def laporan_keuntungan():
                 print("Tidak ada transaksi pada periode tersebut")
             
         elif pilihan == '3':
+            os.system('cls')
             penjualan = pd.read_csv('penjualan.csv')
             total_keuntungan = penjualan['keuntungan'].sum()
             total_transaksi = len(penjualan)
@@ -345,8 +369,10 @@ def laporan_keuntungan():
             break
             
         input("\nTekan Enter untuk melanjutkan...")
+        os.system('cls')
 def logout():
-    print("Anda telah logout. Sampai jumpa!")
+    os.system('cls')
+    input ("Anda telah logout. Sampai jumpa!")
     os.system('cls')
     exit()
 
@@ -372,10 +398,13 @@ def menu_kasir(username):
         pilihan = input("Pilih menu (1/2/3): ")
 
         if pilihan == '1':
+            os.system('cls')
             kelola_produk("kasir", username)
         elif pilihan == '2':
+            os.system('cls')
             catatan_penjualan(username)
         elif pilihan == '3':
+            os.system('cls')
             logout()
         else:
             print("Pilihan tidak valid!")
@@ -405,14 +434,19 @@ def menu_owner(username):
         pilihan = input("Pilih menu (1/2/3/4/5): ")
 
         if pilihan == '1':
+            os.system('cls')
             kelola_produk("owner", username)
         elif pilihan == '2':
+            os.system('cls')
             catatan_penjualan(username)
         elif pilihan == '3':
+            os.system('cls')
             laporan_keuntungan()
         elif pilihan == '4':
+            os.system('cls')
             kelola_akun_kasir()
         elif pilihan == '5':
+            os.system('cls')
             logout()
         else:
             print("Pilihan tidak valid!")
